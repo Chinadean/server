@@ -1,0 +1,75 @@
+* dimension customer :
+
+country
+  - zone
+    - type
+      - code
+        + name
+        + email
+
+* dimension product :
+
+familly
+  - catalog
+    - code
+      + picture
+      + description
+      + cost
+
+* dimension year :
+
+* dimension month :
+  - quarter
+    - month
+
+* invoice cube
+
+  - customer
+  - product
+  - year
+  - month
+  + amt
+
+CSV DATA :
+
+C1;P1;120;2015;02
+C1;P2;32;2015;03
+
+* Import
+
+C1 -> dimension customer (country, zone, type, code)
+P1 -> dimension product (familly, catalog, code)
+2015 -> dimension year
+02 -> dimension month (quarter, month)
+
+120 -> measure
+
+[C1, P1, 2015, 02, measure : {
+	items: counter,
+	min: value,
+	max: value,
+	sum: value
+}]
+
+Clients --> 100.000
+Produits --> 50.000
+Month --> 12
+
+
+* Request :
+  - give me sells on 2015, qt1, family A
+
+dimensions [
+year=2015
+month.quater=qt1
+products.familly=A
+]
+
+year 2015 -> 1x
+month in q1 -> 4x
+products in family A -> 5000x
+customers -> 100.000x
+
+--> full cube scan
+each entry
+
